@@ -1,7 +1,7 @@
 package service
 
 import ("github.com/Egorich42/testserver/container"
-
+	"os"
 	"github.com/Shopify/sarama"
 	"log")
 
@@ -18,6 +18,19 @@ func NewAppService(container container.Container) AppService {
 		container: container,
 	}
 }
+
+
+// MakePayment publishes to kafka
+func (t *appService) SendCoords(coords []byte) error {
+	log.Print("i try to send location")
+	//message := 
+	addr := []string{t.container.GetConfig().Host+":"+t.container.GetConfig().KafkaPort}
+	topic := "coordinates"
+	PushMessage(addr, topic, coords)
+	// PUSH TO KAFKA
+	return nil
+}
+
 
 func PushMessage(addrs []string, topic string, message []byte){
 	producer, err := sarama.NewSyncProducer(addrs, nil)
@@ -40,13 +53,13 @@ func PushMessage(addrs []string, topic string, message []byte){
 	}
 }
 
-// MakePayment publishes to kafka
-func (t *appService) SendCoords(coords []byte) error {
-	log.Print("i try to send location")
-	//message := 
-	addr := []string{t.container.GetConfig().Host+":"+t.container.GetConfig().KafkaPort}
-	topic := "coordinates"
-	PushMessage(addr, topic, coords)
-	// PUSH TO KAFKA
-	return nil
+func StartConsume(cgroup string, topic string, zookeeperAddr string) {
+    cg, err := initConsumer(cgroup, topic, zookeeperAddr)
+    if err != nil {
+        log.Println("Error consumer goup: ", err.Error())
+        os.Exit(1)
+    }
+    defer cg.Close()
+
+    consume(topic, cg)
 }

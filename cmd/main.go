@@ -21,6 +21,15 @@ func main() {
 	// Define new container
 	c := container.NewContainer(initiatorConfig)
 
+	// Define consumer conf
+
+	zookeeperAddr := c.GetConfig().Host+":"+c.GetConfig().ZookeeperPort
+	cgroup := "cgroup"
+	topic := "coordinates"
+
+	// run consumer in gorutine
+	go service.StartConsume(cgroup, topic, zookeeperAddr)
+
 	// Define router
 	r := fastHttpRouter.New()
 	apiGroup := r.Group("/v1")
