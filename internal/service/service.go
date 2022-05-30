@@ -1,6 +1,6 @@
 package service
 
-import ("github.com/Egorich42/testserver/container"
+import ("github.com/Egorich42/go_kafka_restapi_example/container"
 	"os"
 	"github.com/Shopify/sarama"
 	"log")
@@ -20,14 +20,11 @@ func NewAppService(container container.Container) AppService {
 }
 
 
-// MakePayment publishes to kafka
 func (t *appService) SendCoords(coords []byte) error {
-	log.Print("i try to send location")
-	//message := 
-	addr := []string{t.container.GetConfig().Host+":"+t.container.GetConfig().KafkaPort}
 	topic := "coordinates"
+	log.Printf("Try send location to topic %v", topic)
+	addr := []string{t.container.GetConfig().KafkaHost+":"+t.container.GetConfig().KafkaPort}
 	PushMessage(addr, topic, coords)
-	// PUSH TO KAFKA
 	return nil
 }
 
@@ -53,13 +50,13 @@ func PushMessage(addrs []string, topic string, message []byte){
 	}
 }
 
+// constructor Consumer -> NewConsumer!
 func StartConsume(cgroup string, topic string, zookeeperAddr string) {
     cg, err := initConsumer(cgroup, topic, zookeeperAddr)
     if err != nil {
-        log.Println("Error consumer goup: ", err.Error())
+        log.Println("Error consumer group: ", err.Error())
         os.Exit(1)
     }
     defer cg.Close()
-
     consume(topic, cg)
 }

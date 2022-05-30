@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/valyala/fasthttp"
-	"github.com/Egorich42/testserver/container"
-	"github.com/Egorich42/testserver/internal/service"
+	"github.com/Egorich42/go_kafka_restapi_example/container"
+	"github.com/Egorich42/go_kafka_restapi_example/internal/service"
 	"log"
 )
 
@@ -20,9 +20,8 @@ func NewAppController(container container.Container, service service.AppService)
 }
 
 func (t *AppController) SendCoords(ctx *fasthttp.RequestCtx) {
-	log.Print("i catch location")
 	reqBody := ctx.PostBody()
 	t.service.SendCoords(reqBody)
-	log.Print(reqBody)
+	log.Printf("New coords send to query")
 	return
 }

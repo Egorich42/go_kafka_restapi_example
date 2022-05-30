@@ -6,18 +6,7 @@ import (
     "github.com/Shopify/sarama"
     "github.com/wvanbergen/kafka/consumergroup"
 )
-/*
-func StartConsume(cgroup string, topic string, zookeeperAddr string) {
-    cg, err := initConsumer(cgroup, topic, zookeeperAddr)
-    if err != nil {
-        log.Println("Error consumer goup: ", err.Error())
-        os.Exit(1)
-    }
-    defer cg.Close()
 
-    consume(topic, cg)
-}
-*/
 func initConsumer(cgroup string, topic string, zookeeperAddr string)(*consumergroup.ConsumerGroup, error) {
     // consumer config
     config := consumergroup.NewConfig()
@@ -26,7 +15,9 @@ func initConsumer(cgroup string, topic string, zookeeperAddr string)(*consumergr
 
     // join to consumer group
     cg, err := consumergroup.JoinConsumerGroup(cgroup, []string{topic}, []string{zookeeperAddr}, config)
+    log.Println("ZZOO ADDR", zookeeperAddr)
     if err != nil {
+        log.Fatal("!!!!!!!!!!!!!!!!!!!!!!!!!!", err)
         return nil, err
     }
 
@@ -45,6 +36,7 @@ func consume(topic string, cg *consumergroup.ConsumerGroup) {
 
             log.Println("Topic: ", msg.Topic)
             log.Println("Value: ", string(msg.Value))
+	    //Process message ?
 
             // commit to zookeeper that message is read
             // this prevent read message multiple times after restart

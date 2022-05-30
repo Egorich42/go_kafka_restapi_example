@@ -1,7 +1,7 @@
 package container
 
 import (
-	"github.com/Egorich42/testserver/config"
+	"github.com/Egorich42/go_kafka_restapi_example/config"
 )
 
 // Container represents an interface for accessing the data which sharing in overall application

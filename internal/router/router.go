@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/fasthttp/router"
-	"github.com/Egorich42/testserver/internal/api"
+	"github.com/Egorich42/go_kafka_restapi_example/internal/api"
 )
 
 type AppRouter struct {

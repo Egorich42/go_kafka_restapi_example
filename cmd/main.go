@@ -3,11 +3,11 @@ package main
 import (
 	fastHttpRouter "github.com/fasthttp/router"
 	"github.com/valyala/fasthttp"
-	"github.com/Egorich42/testserver/config"
-	"github.com/Egorich42/testserver/container"
-	"github.com/Egorich42/testserver/internal/api"
-	"github.com/Egorich42/testserver/internal/router"
-	"github.com/Egorich42/testserver/internal/service"
+	"github.com/Egorich42/go_kafka_restapi_example/config"
+	"github.com/Egorich42/go_kafka_restapi_example/container"
+	"github.com/Egorich42/go_kafka_restapi_example/internal/api"
+	"github.com/Egorich42/go_kafka_restapi_example/internal/router"
+	"github.com/Egorich42/go_kafka_restapi_example/internal/service"
 	"log"
 )
 
@@ -23,11 +23,11 @@ func main() {
 
 	// Define consumer conf
 
-	zookeeperAddr := c.GetConfig().Host+":"+c.GetConfig().ZookeeperPort
+	zookeeperAddr := c.GetConfig().ZookeeperHost+":"+c.GetConfig().ZookeeperPort
+	
 	cgroup := "cgroup"
 	topic := "coordinates"
-
-	// run consumer in gorutine
+	log.Print(cgroup, topic, zookeeperAddr, "@@@@@@@@@@@@@@@@@")
 	go service.StartConsume(cgroup, topic, zookeeperAddr)
 
 	// Define router
